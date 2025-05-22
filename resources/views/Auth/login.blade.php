@@ -1,4 +1,3 @@
-<!-- filepath: e:\jsp6a15\laravel_11_crud\resources\views\Auth\login.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,18 +11,22 @@
         <h2 class="text-center mb-4">Login</h2>
         <form action="{{ route('login') }}" method="post">
             @csrf
+
+            <!-- Success Message -->
             @if(session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
             @endif
 
+            <!-- Error Message -->
             @if(session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
                 </div>
             @endif
 
+            <!-- Validation Errors -->
             @if($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -36,7 +39,7 @@
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>

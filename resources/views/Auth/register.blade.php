@@ -9,18 +9,41 @@
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow-lg" style="width: 400px;">
         <h2 class="text-center mb-4">Register</h2>
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+
+        <!-- Success Message -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
         @endif
-        <form action="{{ route('register') }}" method="post" onsubmit="window.location='{{ route('login.form') }}'; return false;">
+
+        <!-- Error Message -->
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Validation Errors -->
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('register') }}" method="post">
             @csrf
             <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" required>
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="Enter your name" value="{{ old('name') }}" required>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
@@ -37,8 +60,4 @@
         </p>
     </div>
 </body>
-</p>
-    </div>
-</body>
 </html>
-
