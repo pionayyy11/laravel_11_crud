@@ -30,4 +30,4 @@ Route::get('/login', function () {
 
 // Route for handling the login form submission
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-
+Route::post('/logout', [authController::class, 'logout'])->name('logout');
