@@ -7,6 +7,9 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request; // Import the Request class
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProductController extends Controller
 {
@@ -49,7 +52,7 @@ public function store(Request $request)
     }
 
     // Save the product to the database
-    \App\Models\Product::create($validatedData);
+    Product::create($validatedData);
 
     return redirect()->route('products.index')->with('success', 'Product added successfully!');
 }
@@ -96,5 +99,39 @@ public function store(Request $request)
 
         return redirect()->route('products.index')
             ->withSuccess('Product is deleted successfully.');
+    }
+}
+
+class authController extends Controller
+{
+    public function register(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        \App\Models\User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+        ]);
+
+        return redirect()->route('login.form')->with('success', 'Registration successful! Please log in.');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('products.index')->with('success', 'Login successful!');
+        }
+
+        return back()->with('error', 'Invalid credentials. Please try again.');
     }
 }
