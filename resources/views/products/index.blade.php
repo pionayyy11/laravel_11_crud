@@ -1,4 +1,11 @@
 @extends('layouts.app')
+
+<div class="text-end mt-2 me-3">
+    <form action="{{ route('logout') }}" method="post" style="display: inline;">
+        @csrf
+        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+    </form>
+</div>
 @section('content')
 <div class="row justify-content-center mt-3">
  <div class="col-md-12">

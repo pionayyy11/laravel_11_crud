@@ -48,7 +48,7 @@ class authController extends Controller
             $request->session()->regenerate();
 
             // Redirect to the intended route or a default route
-            return redirect()->intended('products.index')->with('success', 'Login successful!');
+            return redirect()->intended('products')->with('success', 'Login successful!');
         }
 
         // Redirect back with an error message if login fails
@@ -56,4 +56,22 @@ class authController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
+
+    /**
+     * Handle user logout.
+     */
+public function logout(Request $request)
+{
+    // Log out the user
+    Auth::logout();
+
+    // Invalidate the session
+    $request->session()->invalidate();
+
+    // Regenerate the session token
+    $request->session()->regenerateToken();
+
+    // Redirect to the login page with a success message
+    return redirect()->route('login.form')->with('success', 'You have been logged out successfully.');
+}
 }
